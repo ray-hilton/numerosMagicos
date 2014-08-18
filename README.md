@@ -48,28 +48,6 @@ O plugin *application* foi incluído no `build.gradle` para que o Gradle soubess
 
 Com esse comando rodamos os testes existentes para nosso projeto. Assim como as classes da aplicação, o diretório onde nossos testes ficam é configurado no arquivo `build.gradle`. No momento, temos apenas um teste para a classe `Despertar.java`. Dê uma olhada no arquivo `DespertarTests.java` e tente implementar seu primeiro teste para o método `getOpcoes` da classe `Despertar`.
 
-------------------
-
-## TDD
-
-#### Implementando a rotina do trânsito e seu teste logo depois
-#### Alterando um teste para usar mocks e stubs
-#### Escrevendo o teste unitário antes
-
-------------------
-
-## Cobertura e RTD
-
-#### Adicionando e entendendo mais sobre cobertura de código
-#### Criando seu próprio ambiente RTD
-------------------    
-
-## Red-Green-**Refactor**
-
-#### Imprimindo o resultado por extenso
-#### Refatorando com testes
-------------------
-
 [1]: http://www.gradle.org/
 [2]: http://maven.apache.org/
 [3]: http://ant.apache.org/

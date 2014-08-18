@@ -1,0 +1,41 @@
+//O gradle possui vários plugins que complementam o seu funcionamento. Como vamos desenvolver uma aplicação java, 
+//esse plugin é essencial para que ele saiba como compilar nossas classes
+apply plugin: 'java'
+
+//Esse plugin informa ao Gradle que nosso projeto é uma aplicação java standalone, e não uma biblioteca ou aplicação web.
+apply plugin:'application'
+
+//Por se tratar de uma aplição, precisamos de uma classe principal. E aqui informamos ao Gradle qual "public static void main(String[] args)" ele
+//deverá rodar quando o comando "gradle run" for executado
+mainClassName = "com.gotoagile.csd.RotinaDeProgramador"
+
+//O gradle  também faz o trabalho do Maven, e aqui informamos em quais repositórios ele deve procurar nossas dependências.
+repositories {
+    mavenCentral()
+}
+
+//Aqui podemos informar ao Gradle onde ele encontrará os recursos do projeto: classes da aplicação, testes e todo o resto.
+sourceSets {
+    main{
+        java{
+          srcDir 'main/java'  
+        }
+    }
+
+    test{
+        java{
+            srcDir 'test/java'
+        }
+    }
+}
+
+
+//Aqui começa nosso controle de dependências.
+dependencies {
+  //testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+//Precisamos configurar a entrada padrão do Gradle para que ele consiga ler o que digitamos no console
+run{
+    standardInput = System.in
+}

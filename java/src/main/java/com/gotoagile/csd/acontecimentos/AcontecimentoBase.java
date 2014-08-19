@@ -7,12 +7,14 @@ import java.io.*;
 public abstract class AcontecimentoBase{
   private Map<Integer, String> opcoes;
   private ConsoleHelper cor;
+  private Integer humorAtual;
 
   public AcontecimentoBase(){
     cor = new ConsoleHelper();
   }
 
-  public Integer exibeEscolha(Integer humorAtual){
+  public Integer exibeEscolha(Integer pHumorAtual){
+    humorAtual = pHumorAtual;
     System.out.println(cor.bold(cor.green("********************************************************************")));
     System.out.println(cor.bold(cor.green("********************************************************************")));
     System.out.println(cor.white(getDescricaoInicial()));
@@ -52,6 +54,10 @@ public abstract class AcontecimentoBase{
     }
 
     return modificador + humorAtual;
+  }
+
+  protected Integer getHumorAtual(){
+    return humorAtual;
   }
 
   public abstract Integer getModificadorDeHumor(Integer opcao);

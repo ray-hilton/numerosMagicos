@@ -32,7 +32,7 @@ sourceSets {
 
 //Aqui começa nosso controle de dependências.
 dependencies {
-  //testCompile group: 'junit', name: 'junit', version: '4.11'
+  testCompile group: 'junit', name: 'junit', version: '4.11'
 }
 
 //Precisamos configurar a entrada padrão do Gradle para que ele consiga ler o que digitamos no console

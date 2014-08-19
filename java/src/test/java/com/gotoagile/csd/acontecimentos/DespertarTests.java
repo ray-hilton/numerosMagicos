@@ -18,9 +18,12 @@ public class DespertarTests {
 
   @Test
   public void testaModificadorDeHumor() {
-    assertEquals("Conseguimos iniciar o dia de testes do CSD!", despertar.getModificadorDeHumor(1), new Integer(2));
-    assertEquals("Conseguimos iniciar o dia de testes do CSD!", despertar.getModificadorDeHumor(2), new Integer(-2));
+    assertEquals("A primeira opção aumenta a pontuação de humor", despertar.getModificadorDeHumor(1), new Integer(2));
+    assertEquals("A segunda opção diminui a pontuação de humor", despertar.getModificadorDeHumor(2), new Integer(-2));
   }
 
-
+  @Test
+  public void testaNumeroDeOpcoes() {
+    assertEquals("O acontecimento de despertar tem apenas duas opções", despertar.getOpcoes().size(), 2);
+  }
 }

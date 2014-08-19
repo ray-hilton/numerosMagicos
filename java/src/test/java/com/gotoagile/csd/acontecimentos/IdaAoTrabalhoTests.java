@@ -8,13 +8,13 @@ import static org.mockito.Mockito.*;
 import org.junit.*;
 import java.io.*;
 
-public class CafeDaManhaTests {
+public class IdaAoTrabalhoTests {
 
-  private CafeDaManha cafe;
+  private IdaAoTrabalho ida;
 
   @Before
   public void setUp(){
-    cafe = spy(new CafeDaManha());
+    ida = spy(new IdaAoTrabalho());
   }
 
   @Test
@@ -25,12 +25,6 @@ public class CafeDaManhaTests {
   @Test
   public void testaNumeroDeOpcoes() {
     
-  }
-
-  @Test
-  public void testaStubDoHumorAtual() {
-    when(cafe.getHumorAtual()).thenReturn(new Integer(5));
-    assertEquals("Teste de stubs utilizando o Mockito", new Integer(5), cafe.getHumorAtual());
   }
 
 }

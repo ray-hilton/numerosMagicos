@@ -57,7 +57,7 @@ Com esse comando rodamos os testes existentes para nosso projeto. Assim como as 
 Para o café da manhã, vamos fazer algo um pouco diferente. Você terá duas opções: um café **light** com frutas e um café **americano** com bacon, ovos, bacon, calabresa, bacon e bacon. Mas dessa vez a pontuação ganha irá variar de acordo com o seu humor atual.
 
 * Para o café **light**:
- * Se sua pontuação de humor atual for inferior a estiver abaixo de 10, comer pouco só vai te deixar mais mal-humorado. Então você perde mais alguns pontos de humor (a seu critério).
+ * Se sua pontuação de humor atual estiver abaixo de 10, comer pouco só vai te deixar mais mal-humorado. Então você perde mais alguns pontos de humor (a seu critério).
  * Caso seu humor esteja acima de 10, você vai ficar ainda mais feliz por conseguir se manter na dieta! Ganhe alguns pontos de humor a seu critério.
  
 *  Para o café **americano**:
@@ -98,9 +98,43 @@ Sinta-se à vontade para criar seus próprios métodos na classe `IdaAoTrabalho`
 
 ------------------
 
+## Cobertura e RTD
+
+Você já deve ter notado que um relatório HTML é gerado a cada vez que você roda os testes. Esse relatório informa o resultado de cada método de testes e o percentual de sucesso de todos eles. Mas existe um outro relatório muito interessante que podemos obter através dos testes: o relatório de **cobertura de código**.
+
+#### Adicionando e entendendo mais sobre cobertura de código
+O **Gradle** possui um excelente plugin para avaliação de cobertura de código chamado [Jacoco][6]. Você pode conferir o arquivo `build.gradle` e procurar por `jacoco` para ver o quão simples é configurá-lo.
+
+Para emitir nosso primeiro relatório de cobertura, precisamos rodar 3 comandos:
+
+* `gradle clean`: Esse comando limpará os resultados dos testes rodados anteriormente. Ele é necessário para que os testes rodem novamente sob a influência do Jacoco.
+* `gradle test`: Vamos rodar os testes normalmente. A ação do Jacoco é transparente e apenas implica em um pequeno aumento no tempo de execução dos testes.
+* `gradle jacocoTestReport`: Essa nova tarefa foi adicionada com a inclusão do plugin Jacoco. Ela vai gerar o relatório HTML na pasta `build/jacocoHtml/`
+
+Lembre-se que você pode sempre conferir as tarefas disponibilizadas pelo Gradle através do comando `gradle tasks`.
+
+O relatório de cobertura é uma excelente maneira de descobrir situações que passaram despercebidas em nossos testes. Por exemplo: *o que acontece se alguém informar um número de opção inexistente em um acontecimento?*.
+
+#### Criando seu próprio ambiente RTD
+
+***Real Time Development*** é um conceito relativamente novo que prega o feedback instantâneo de testes e análise estática de código. Exatamente da mesma forma como a maioria das IDE's compila automaticamente seu código sem que você precise clicar no botão *build*.
+
+Esse conceito é ainda mais interessante quando trabalhamos com linguagens dinâmicas, onde o compilador é menos restritivo. Mas o feedback dos testes é importante em qualquer linguagem, afinal:
+
+> O compilador consegue garantir que o código que você escreveu está aderente às regras sintáticas da linguagem de programação utilizada. Os testes garantem que seu código está aderente às regras de negócio de seu produto.
+
+O plugin `watch` foi adicionado no arquivo `build.gradle` e configurado para monitorar os diretórios de código e testes. Além disso, o plugin `announce` foi adicionado para prover um feedback mais amigável sempre que algum arquivo for alterado.
+
+Tente gastar alguns minutos entendendo o que as novas linhas do arquivo `build.gradle` estão fazendo por você. Quando se sentir satisfeito, abra um terminal e digite o comando `gradle watch`.
+
+Agora... **Experimente o RTD**. Teremos duas Sprints de 25 minutos para implementar os 4 acontecimentos restantes. As regras do jogo serão definidas por cada equipe.
+
+**Tempo do exercício:** 1 hora.
+
 
 [1]: http://www.gradle.org/
 [2]: http://maven.apache.org/
 [3]: http://ant.apache.org/
 [4]: http://junit.org/
 [5]: http://code.google.com/p/mockito/
+[6]: http://www.gradle.org/docs/current/userguide/jacoco_plugin.html

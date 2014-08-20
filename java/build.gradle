@@ -1,9 +1,30 @@
+//Esse trecho indica que nosso projeto utilizará plugins que estão em outros repositórios além do Maven padrão.
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    //O plugin utilizado será o 'watch', responsável por monitorar alterações em arquivos
+    dependencies {
+        classpath 'com.bluepapa32:gradle-watch-plugin:0.1.3'
+    }
+}   
+
+//Adiciona o plugin watch para monitorar alterações em arquivos
+apply plugin: 'watch'
+
 //O gradle possui vários plugins que complementam o seu funcionamento. Como vamos desenvolver uma aplicação java, 
 //esse plugin é essencial para que ele saiba como compilar nossas classes
 apply plugin: 'java'
 
 //Esse plugin informa ao Gradle que nosso projeto é uma aplicação java standalone, e não uma biblioteca ou aplicação web.
 apply plugin:'application'
+
+//Plugin responsável por gerar os relatórios de cobertura de código
+apply plugin: "jacoco"
+
+//Plugin responsável por prover feedback gráfico
+apply plugin: "announce"
 
 //Por se tratar de uma aplição, precisamos de uma classe principal. E aqui informamos ao Gradle qual "public static void main(String[] args)" ele
 //deverá rodar quando o comando "gradle run" for executado
@@ -39,4 +60,93 @@ dependencies {
 //Precisamos configurar a entrada padrão do Gradle para que ele consiga ler o que digitamos no console
 run{
     standardInput = System.in
+}
+
+//Configuração do plugin Jacoco para geração de relatórios HTML
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled true
+        html.destination "${buildDir}/jacocoHtml"
+    }
+}
+
+//Configura os diretórios que serão monitorados e as tarefas que devem ser executadas quando houver mudanças
+watch {
+    java {
+        files files('src/main/java', 'src/test/java')
+        tasks 'compileJava', 'test', 'jacocoTestReport'
+    }
+}
+
+
+//Configurações para que o feedback seja bem informativo
+def failedClasses = ""
+def rtdMessage = ""
+test{
+    ignoreFailures true
+
+    afterSuite{description, result ->
+        if(description.parent == null){
+
+            if(result.resultType == TestResult.ResultType.FAILURE){
+                rtdMessage = "<b><i>Os seguintes testes falharam:</i></b> \n"
+                rtdMessage += "---------------------------------------------------------------\n "
+            }
+            else
+                rtdMessage = "Os testes foram executados com sucesso!"
+
+            rtdMessage += failedClasses
+            failedClasses = ""
+        }
+    }
+
+    afterTest{ description, result ->
+        if(result.resultType == TestResult.ResultType.FAILURE)
+        {
+            failedClasses += "<b>${description.className[description.className.lastIndexOf('.')+1..-1]}</b> -> ${description.name}\n"
+        }
+    }
+}
+
+//Após gerado o relatório de cobertura, lê as informações do mesmo para disponibilizá-las na tela
+jacocoTestReport{
+    doLast{
+        rtdMessage += "---------------------------------------------------------------\n "
+        rtdMessage += getCoverageMessage()
+        announce.announce rtdMessage, "local"
+    }
+}
+
+def getTotalClassLines(jacocoCsvLine){
+  def jacocoLine = jacocoCsvLine.split(',')
+  def missedLines = Long.parseLong(jacocoLine[3])
+  def coveredLines = Long.parseLong(jacocoLine[4])
+  coveredLines + missedLines
+}
+
+def getCoveredClassLines(jacocoCsvLine){
+  def jacocoLine = jacocoCsvLine.split(',')
+  def coveredLines = Long.parseLong(jacocoLine[4])
+  coveredLines
+}
+
+def evalLineCoverage(jacocoCsvLine){
+  getCoveredClassLines( jacocoCsvLine ) / getTotalClassLines( jacocoCsvLine )
+}
+
+def getCoverageMessage() {
+    def isJacocoHeader = true
+    def coveredLines = 0
+    def totalLines = 0
+    println new File(".").getAbsolutePath()
+    new File("${project.buildDir}/reports/jacoco/test/jacocoTestReport.csv").eachLine{
+      if (!isJacocoHeader){
+        evalLineCoverage it
+        totalLines += getTotalClassLines( it )
+        coveredLines += getCoveredClassLines( it )
+      }
+      isJacocoHeader = false
+    }
+    "Cobertura Total: ${ new java.text.DecimalFormat("#.##").format(coveredLines*100/totalLines)}%"
 }

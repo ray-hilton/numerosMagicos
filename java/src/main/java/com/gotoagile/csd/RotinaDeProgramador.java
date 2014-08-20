@@ -22,8 +22,8 @@ public class RotinaDeProgramador{
     for(AcontecimentoBase acontecimento: getAcontecimentos())
       humorAtual = acontecimento.exibeEscolha(humorAtual);
 
-    System.out.print(cor.bold(cor.blue("Humor Final: ")));
-    System.out.println(cor.bold(cor.white(humorAtual + " pontos.")));
+    Extenso extenso = new Extenso(new Double(humorAtual));
+    System.out.print(cor.bold(cor.blue("Você terminou o dia com " + extenso.toString() + " de humor")));
   }
 
   private ArrayList<AcontecimentoBase> getAcontecimentos(){

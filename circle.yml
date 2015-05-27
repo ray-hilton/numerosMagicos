@@ -1,0 +1,32 @@
+## Customize the test machine
+machine:
+
+  timezone:
+    America/Los_Angeles # Set the timezone
+
+  # Override /etc/hosts
+  hosts:
+    circlehost: 127.0.0.1
+
+  # Add some environment variables
+  environment:
+    CIRCLE_ENV: test
+
+  java:
+     version: oraclejdk6
+## Customize test commands
+test:
+  override:
+    - gradle test -q --rerun-tasks
+    - gradle jacocoTestReport -q
+
+  post:
+    - mv ./java/build/jacocoHtml $CIRCLE_ARTIFACTS
+    - mv ./java/reports/tests $CIRCLE_ARTIFACTS
+
+
+deployment:
+  staging:
+    branch: master
+    commands:
+      - ls

@@ -22,7 +22,7 @@ test:
 
   post:
     - mv ./java/build/jacocoHtml $CIRCLE_ARTIFACTS
-    - mv ./java/reports/tests $CIRCLE_ARTIFACTS
+    - mv ./java/build/reports/tests $CIRCLE_ARTIFACTS
 
 
 deployment:

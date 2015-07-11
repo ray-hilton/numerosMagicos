@@ -150,3 +150,22 @@ def getCoverageMessage() {
     }
     "Cobertura Total: ${ new java.text.DecimalFormat("#.##").format(coveredLines*100/totalLines)}%"
 }
+
+task tarefa << {
+    getNumeroMagico()
+}
+
+def getNumeroMagico() {
+    def counter = 0
+    new File("${project.buildDir}/../src/main/java/com/gotoagile").eachDirRecurse() { dir ->  
+        dir.eachFileMatch(~/.*.java/) {  file ->  
+            println file.getPath()
+            file.eachLine {
+                ++counter
+                if ( it.findAll(/\s([-+]?[0-9]+)/).size() != 0 && it.indexOf("final") < 0 ) {
+                     throw new GradleException("Faliu")
+                }
+            } 
+        }  
+    }
+}

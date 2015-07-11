@@ -10,7 +10,6 @@ public abstract class AcontecimentoBase{
   private Integer humorAtual;
 
   public AcontecimentoBase(){
-    private final int casa1;
     cor = new ConsoleHelper();
   }
 

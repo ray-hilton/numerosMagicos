@@ -19,6 +19,7 @@ test:
   override:
     - gradle test -q --rerun-tasks
     - gradle jacocoTestReport -q
+    - gradle tarefa
 
   post:
     - mv ./java/build/jacocoHtml $CIRCLE_ARTIFACTS
